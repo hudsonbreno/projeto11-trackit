@@ -11,7 +11,7 @@ import Ellipse3 from "./style/Ellipse 3.png";
 
 export default function Login() {
   useEffect(() => {
-    const promise = axios.get("");
+    const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", dados);
     promise.then((resposta) => console.log(resposta));
     promise.catch((resposta) => alert(resposta));
   }, []);
@@ -24,8 +24,8 @@ export default function Login() {
       <img src={Vector4} alt="Vector4"></img>
       <img src={Ellipse3} alt="Ellipse3"></img>
       <h1>TrackIt</h1>
-      <input type="text" placeholder="email" />
-      <input type="text" placeholder="nome" />
+      <input type="text" value={email} placeholder="email" onChange={()=> setEmail("")} />
+      <input type="text" placeholder="nome" onChange={()=> setPassword("")}/>
       <button onSubmit={console.log("submit")}>Entrar</button>
       <h2>
         <Link to={"./cadastro"}> Não tem uma conta? Cadastre-se! </Link>

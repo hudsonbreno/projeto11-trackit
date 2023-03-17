@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios"
 import Vector1 from "./style/Vector 1.png";
 import Vector2 from "./style/Vector 2.png";
 import Vector3 from "./style/Vector 3.png";
@@ -8,6 +9,20 @@ import Vector4 from "./style/Vector 4.png";
 import Ellipse3 from "./style/Ellipse 3.png";
 
 export default function Cadastro() {
+
+  const[email, setEmail] = useState("")
+  const[name, setName] = useState("")
+  const[image, setImage] = useState("")
+  const[password, setPassword] = useState("")
+
+  useEffect(()=>{
+
+    const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up")
+
+    promise.then(resposta => console.log(resposta));
+    promise.catch(resposta => console.log(resposta));
+  },[])
+
   return (
     <PageCadastro>
       <img src={Vector1} alt="Vector1"></img>
@@ -16,10 +31,10 @@ export default function Cadastro() {
       <img src={Vector4} alt="Vector4"></img>
       <img src={Ellipse3} alt="Ellipse3"></img>
       <h1>TrackIt</h1>
-      <input type="text" placeholder="email"></input>
-      <input type="text" placeholder="senha"></input>
-      <input type="text" placeholder="nome"></input>
-      <input type="text" placeholder="foto"></input>
+      <input type="text" placeholder="email" onChange={()=>setEmail()}></input>
+      <input type="text" placeholder="senha" onChange={()=>setPassword()}></input>
+      <input type="text" placeholder="nome" onChange={()=>setName()}></input>
+      <input type="text" placeholder="foto" onChange={()=>setImage()}></input>
       <button onSubmit={console.log()}>Cadastrar</button>
       <h2>
         <Link to="../">já tem uma conta? Faça login!</Link>

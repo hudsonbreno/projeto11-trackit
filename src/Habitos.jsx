@@ -1,8 +1,19 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import fotoPerfil from "./style/Rectangle 14.png"
+import { useEffect, useState } from "react";
+import axios from "axios"
 
 export default function Habitos() {
+
+  useEffect(()=>{
+
+    const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", dados)
+
+    promise.then(resposta => console.log(resposta))
+    promise.catch(resposta => console.log(resposta))
+  },[])
+  
   return (
     <PageHabitos>
       <Navbar>
