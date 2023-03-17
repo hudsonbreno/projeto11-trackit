@@ -1,29 +1,39 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import fotoPerfil from "./style/Rectangle 14.png"
 import { useEffect, useState } from "react";
 import axios from "axios"
 
-export default function Habitos() {
+export default function Habitos({token, image}) {
+
+  const [ form, setForm ] = useState({id: "", name:"", dias:[]})
+  const [ ativado, setAtivado ] = useState("")
+
+  const navigate = useNavigate()
 
   useEffect(()=>{
 
-    const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", dados)
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    const promise = axios.get(URL,config)
 
     promise.then(resposta => console.log(resposta))
-    promise.catch(resposta => console.log(resposta))
+    promise.catch(resposta => console.log(resposta.response.data.message))
   },[])
   
   return (
     <PageHabitos>
       <Navbar>
         <h1>TrackIt</h1>
-        <img src={fotoPerfil} alt="foto perfil"></img>
+        <img src={image} alt="foto perfil"></img>
       </Navbar>
 
       <MeusHabitos>
         <h1>Meus hábitos</h1>
-        <button>+</button>
+        <button onClick={()=>console.log("ei")}>+</button>
       </MeusHabitos>
 
       <Cards>
@@ -31,12 +41,29 @@ export default function Habitos() {
         começar a trackear!
       </Cards>
 
+      <CadastroDeCard>
+          <input type="text" name={"name"} value={form.name} placeholder="Criar nova tarefa...." onChange={console.log("onchange")}/>
+          <ListaDeBotoes>
+            <button ativado={ativado} >D</button>
+            <button ativado={ativado} >S</button>
+            <button ativado={ativado} >T</button>
+            <button ativado={ativado} >Q</button>
+            <button ativado={ativado} >Q</button>
+            <button ativado={ativado} >S</button>
+            <button ativado={ativado} >S</button>
+          </ListaDeBotoes>
+          <div>
+            <button>Cancelar</button>
+            <button>Salvar</button>
+          </div>
+        </CadastroDeCard>
+
       <Rodape>
-        <p><Link to="./habitos">Hábitos</Link></p>
+        <button onClick={()=>navigate("/habitos")}>Hábitos</button>
         <CirculoDeHabitos>
-          <p><Link to="./hoje">Hoje</Link></p>
+        <button onClick={()=>navigate("/hoje")}>Hoje</button>
         </CirculoDeHabitos>
-        <p><Link to="./historico">Histórico</Link></p>
+        <button onClick={()=>navigate("/historico")}>Histórico</button>
       </Rodape>
     </PageHabitos>
   );
@@ -44,6 +71,10 @@ export default function Habitos() {
 
 const PageHabitos = styled.div`
   background-color: #F2F2F2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   h2 {
     font-family: "Lexend Deca";
@@ -151,6 +182,60 @@ const Cards = styled.div`
   line-height: 22px;
 
   color: #666666;
+`
+
+const CadastroDeCard = styled.div`
+  width: 340px;
+  height: 180px;
+  background: #FFFFFF;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  input{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 303px;
+    height: 45px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    /* identical to box height */
+
+    color: #666666;
+
+  }
+  input::placeholder{
+    padding-left:11px;
+  }
+  p{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  button{
+    margin-top: 8px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #D5D5D5;
+    border-radius: 5px;
+    margin-right: 4px;
+  }
+`
+
+const ListaDeBotoes = styled.div`
+    width: 100%;
+    margin-left: 35px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
 `
 
 const Rodape = styled.div`

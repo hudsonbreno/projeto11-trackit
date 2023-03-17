@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios"
 import Vector1 from "./style/Vector 1.png";
 import Vector2 from "./style/Vector 2.png";
@@ -10,18 +10,23 @@ import Ellipse3 from "./style/Ellipse 3.png";
 
 export default function Cadastro() {
 
-  const[email, setEmail] = useState("")
-  const[name, setName] = useState("")
-  const[image, setImage] = useState("")
-  const[password, setPassword] = useState("")
+  const [form, setForm ] = useState({email: "",name: "",image: "",password: ""})
 
-  useEffect(()=>{
+  const navigate = useNavigate()
 
-    const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up")
+  function cadastrar(e){
+    e.preventDefault()
+    let dados = form
+    const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", dados)
 
-    promise.then(resposta => console.log(resposta));
-    promise.catch(resposta => console.log(resposta));
-  },[])
+    promise.then(res => navigate("/")); //status: 201, statusText: 'Created'
+      // tentar dnv: https://camo.githubusercontent.com/fe9e307317127c47e634a97a8431bbed4572cdd36b16488a753a2739e90369d5/68747470733a2f2f687474702e6361742f343039
+    promise.catch(resposta => alert(resposta.data.message));
+  }
+
+  function algoMudou(e){
+    setForm({...form, [e.target.name]: e.target.value})
+  }
 
   return (
     <PageCadastro>
@@ -31,11 +36,13 @@ export default function Cadastro() {
       <img src={Vector4} alt="Vector4"></img>
       <img src={Ellipse3} alt="Ellipse3"></img>
       <h1>TrackIt</h1>
-      <input type="text" placeholder="email" onChange={()=>setEmail()}></input>
-      <input type="text" placeholder="senha" onChange={()=>setPassword()}></input>
-      <input type="text" placeholder="nome" onChange={()=>setName()}></input>
-      <input type="text" placeholder="foto" onChange={()=>setImage()}></input>
-      <button onSubmit={console.log()}>Cadastrar</button>
+      <form onSubmit={cadastrar}>
+        <input type="email" name={"email"} value={form.email} placeholder="email" onChange={algoMudou}></input>
+        <input type="password" name={"password"} value={form.password} placeholder="senha" onChange={algoMudou}></input>
+        <input type="text" name={"name"} value={form.name} placeholder="nome" onChange={algoMudou}></input>
+        <input type="text" name={"image"} value={form.foto} placeholder="foto" onChange={algoMudou}></input>
+        <button>Cadastrar</button>
+      </form>
       <h2>
         <Link to="../">já tem uma conta? Faça login!</Link>
       </h2>
@@ -68,6 +75,12 @@ const PageCadastro = styled.div`
     text-align: center;
 
     color: #126ba5;
+  }
+  form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   button {
     margin-bottom: 25px;

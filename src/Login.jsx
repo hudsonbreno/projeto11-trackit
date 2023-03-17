@@ -2,19 +2,36 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
-import { useEffect } from "react";
 import Vector1 from "./style/Vector 1.png";
 import Vector2 from "./style/Vector 2.png";
 import Vector3 from "./style/Vector 3.png";
 import Vector4 from "./style/Vector 4.png";
 import Ellipse3 from "./style/Ellipse 3.png";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-  useEffect(() => {
-    const promise = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", dados);
-    promise.then((resposta) => console.log(resposta));
-    promise.catch((resposta) => alert(resposta));
-  }, []);
+export default function Login({setToken, setImage}) {
+
+  const [form, setForm] = useState({email: "", password: ""});
+  const navigate = useNavigate()
+
+  function algoMudou(event){
+    setForm({...form, [event.target.name]: event.target.value})
+  }
+
+  function cadastrar(e) {
+    e.preventDefault();
+    let dados = form;
+    const promise = axios.post(
+      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
+      dados
+    );
+    promise.then((res) => {
+      setToken(res.data.token)
+      setImage(res.data.image)
+      navigate("/hoje")      
+    });
+    promise.catch((resposta) => alert(resposta.data.message));
+  }
 
   return (
     <PageLogin>
@@ -24,9 +41,25 @@ export default function Login() {
       <img src={Vector4} alt="Vector4"></img>
       <img src={Ellipse3} alt="Ellipse3"></img>
       <h1>TrackIt</h1>
-      <input type="text" value={email} placeholder="email" onChange={()=> setEmail("")} />
-      <input type="text" placeholder="nome" onChange={()=> setPassword("")}/>
-      <button onSubmit={console.log("submit")}>Entrar</button>
+      <form onSubmit={cadastrar}>
+        <input
+          type="text"
+          name={"email"}
+          value={form.email}
+          placeholder="email"
+          onChange={algoMudou}
+          required
+        />
+        <input
+          type="password"
+          name={"password"}
+          value={form.password}
+          placeholder="senha"
+          onChange={algoMudou}
+          required
+        />
+        <button>Entrar</button>
+      </form>
       <h2>
         <Link to={"./cadastro"}> Não tem uma conta? Cadastre-se! </Link>
       </h2>
@@ -59,6 +92,13 @@ const PageLogin = styled.div`
     text-align: center;
 
     color: #126ba5;
+  }
+
+  form{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   input {
@@ -95,7 +135,7 @@ const PageLogin = styled.div`
     color: #ffffff;
   }
 
-  a{
+  a {
     font-family: "Lexend Deca";
     font-style: normal;
     font-weight: 400;
@@ -105,7 +145,6 @@ const PageLogin = styled.div`
     text-decoration-line: underline;
     color: #52b6ff;
   }
-
 
   img:nth-child(1) {
     position: absolute;

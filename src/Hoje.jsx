@@ -1,13 +1,38 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import fotoPerfil from "./style/Rectangle 14.png"
+import fotoPerfil from "./style/Rectangle 14.png";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Hoje() {
+export default function Hoje({token, image}) {
+  let objetoVazioItens = {id:"",name:"",done:"",currentSequence:"",highestSequence:""}
+  const [ items, setItems ] = useState([])
+
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
+    
+    const config = {
+      headers: { Authorization: `Bearer ${token}`}
+    }
+    
+    const promise = axios.get(URL, config)
+
+    promise.then(resposta => setItems(resposta))
+
+    promise.catch(resposta => console.log(resposta))
+
+  },[])
+
+
   return (
     <PageHoje>
       <Navbar>
         <h1>TrackIt</h1>
-        <img src={fotoPerfil} alt="foto perfil"></img>
+        <img src={image} alt="foto perfil"></img>
       </Navbar>
 
       <MeuHoje>
@@ -17,25 +42,20 @@ export default function Hoje() {
 
       <Item>
         <TextItem>
-          <h1>Ler 1 capítulo de livro</h1>
-          <h2>Sequência atual: 3 dias</h2>
-          <h2>Seu recorde: 5 dias</h2>
+          {items===[]? items.map((item)=>console.log(item.data)): ""}
+          {/* {items==objetoVazioItens?"":items.map((item)=>(
+            <Item key={item.id} titulo={item.name} done={item.done} currentSequence={item.currentSequence} highestSequence={item.highestSequence} />
+          ))} */}
         </TextItem>
         <button>V</button>
       </Item>
 
       <Rodape>
-        <p>
-          <Link to="./habitos">Hábitos</Link>
-        </p>
+          <button onClick={()=>navigate("/habitos")}>Hábitos</button>
         <CirculoDeHabitos>
-          <p>
-            <Link to="./hoje">Hoje</Link>
-          </p>
+          <button onClick={()=>navigate("/Hoje")}>Hoje</button>
         </CirculoDeHabitos>
-        <p>
-          <Link to="./historico">Histórico</Link>
-        </p>
+          <button onClick={()=>navigate("/historico")}>Histórico</button>
       </Rodape>
     </PageHoje>
   );

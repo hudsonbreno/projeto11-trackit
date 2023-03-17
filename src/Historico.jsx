@@ -1,13 +1,16 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import fotoPerfil from "./style/Rectangle 14.png"
 
-export default function Historico() {
+export default function Historico({token, image}) {
+
+  const navigate = useNavigate()
+
   return (
     <PageHistorico>
       <Navbar>
         <h1>TrackIt</h1>
-        <img src={fotoPerfil} alt="foto perfil"></img>
+        <img src={image} alt="foto perfil"></img>
       </Navbar>
 
       <h1>Histórico</h1>
@@ -15,17 +18,11 @@ export default function Historico() {
       <h2>Em breve você poderá ver o histórico dos seus hábitos aqui!</h2>
 
       <Rodape>
-        <p>
-          <Link to="./habitos">Hábitos</Link>
-        </p>
+          <button onClick={()=>navigate("/habitos")}>Hábitos</button>
         <CirculoDeHabitos>
-          <p>
-            <Link to="./hoje">Hoje</Link>
-          </p>
+          <button onClick={()=>navigate("/Hoje")}>Hoje</button>
         </CirculoDeHabitos>
-        <p>
-          <Link to="./historico">Histórico</Link>
-        </p>
+          <button onClick={()=>navigate("/historico")}>Histórico</button>
       </Rodape>
     </PageHistorico>
   );
