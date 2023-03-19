@@ -1,10 +1,26 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import fotoPerfil from "./style/Rectangle 14.png"
+import { useEffect } from "react";
+import axios from "axios"
 
 export default function Historico({token, image}) {
 
   const navigate = useNavigate()
+
+  useEffect(()=>{
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}`}
+    }
+
+    let URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily"
+    const promise = axios.get(URL, config)
+
+    promise.then(res => console.log(res))
+    promise.catch(err => console.log(err))
+
+  },[])
 
   return (
     <PageHistorico>

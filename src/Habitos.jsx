@@ -4,26 +4,71 @@ import fotoPerfil from "./style/Rectangle 14.png"
 import { useEffect, useState } from "react";
 import axios from "axios"
 
-export default function Habitos({token, image}) {
+export default function Habitos({ token, image }) {
 
-  const [ form, setForm ] = useState({id: "", name:"", dias:[]})
-  const [ ativado, setAtivado ] = useState("")
+  const [form, setForm] = useState({ name: "", days: [] })
+  const [ativado, setAtivado] = useState([])
+  const [item, setItem] = useState(["1", "2"])
 
   const navigate = useNavigate()
 
-  useEffect(()=>{
+  useEffect(() => {
 
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     }
 
-    const promise = axios.get(URL,config)
+    const promise = axios.get(URL, config)
 
-    promise.then(resposta => console.log(resposta))
+    promise.then(resposta => {
+      setItem(resposta.data)
+    })
     promise.catch(resposta => console.log(resposta.response.data.message))
-  },[])
-  
+  }, [])
+
+  function criarHabito(e) {
+    e.preventDefault()
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    let dados = form;
+    console.log(dados)
+    let URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+    const promise2 = axios.post(
+      URL, dados, config
+    )
+    promise2.then(res => console.log(res.data))
+    promise2.catch(err => console.log(err.data))
+  }
+
+  function algoMudou(event) {
+    setForm({ ...form, [event.target.name]: event.target.value })
+  }
+
+  function botaoDia(dias) {
+    if (ativado.indexOf(dias) == -1) {
+      let ativadosNovo = [...ativado, dias]
+      setAtivado([...ativado, dias])
+      setForm({ ...form, days: ativadosNovo })
+    }
+  }
+
+  function deletarTarefa(id) {
+    console.log("id:" + id)
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+
+    let URL3 = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
+    const promise3 = axios.delete(URL3, config)
+    promise3.then(res => console.log(res))
+    promise3.catch(err => console.log(err))
+  }
+
+
   return (
     <PageHabitos>
       <Navbar>
@@ -33,8 +78,24 @@ export default function Habitos({token, image}) {
 
       <MeusHabitos>
         <h1>Meus hábitos</h1>
-        <button onClick={()=>console.log("ei")}>+</button>
+        <button onClick={() => console.log("ei")}>+</button>
       </MeusHabitos>
+
+      <Tarefas>
+        {item == [] ? <div>Carregando</div> : item.map((item) =>
+          <>
+            <h1>{item.name}</h1>
+            <div>D</div>
+            <div>S</div>
+            <div>T</div>
+            <div>Q</div>
+            <div>Q</div>
+            <div>S</div>
+            <div>S</div>
+            <button onClick={()=>deletarTarefa(item.id)} >deletar</button>
+          </>
+        )}
+      </Tarefas>
 
       <Cards>
         Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
@@ -42,28 +103,28 @@ export default function Habitos({token, image}) {
       </Cards>
 
       <CadastroDeCard>
-          <input type="text" name={"name"} value={form.name} placeholder="Criar nova tarefa...." onChange={console.log("onchange")}/>
-          <ListaDeBotoes>
-            <button ativado={ativado} >D</button>
-            <button ativado={ativado} >S</button>
-            <button ativado={ativado} >T</button>
-            <button ativado={ativado} >Q</button>
-            <button ativado={ativado} >Q</button>
-            <button ativado={ativado} >S</button>
-            <button ativado={ativado} >S</button>
-          </ListaDeBotoes>
-          <div>
-            <button>Cancelar</button>
-            <button>Salvar</button>
-          </div>
-        </CadastroDeCard>
+        <form onSubmit={criarHabito}>
+          <input type="text" name={"name"} value={form.name} placeholder="Criar nova tarefa...." onChange={algoMudou} required />
+          <>
+            <button onClick={() => botaoDia("1")} type="button" >D</button>
+            <button onClick={() => botaoDia("2")} type="button" >S</button>
+            <button onClick={() => botaoDia("3")} type="button" >T</button>
+            <button onClick={() => botaoDia("4")} type="button" >Q</button>
+            <button onClick={() => botaoDia("5")} type="button" >Q</button>
+            <button onClick={() => botaoDia("6")} type="button" >S</button>
+            <button onClick={() => botaoDia("7")} type="button" >S</button>
+          </>
+          <button>Salvar</button>
+        </form>
+
+      </CadastroDeCard>
 
       <Rodape>
-        <button onClick={()=>navigate("/habitos")}>Hábitos</button>
+        <button onClick={() => navigate("/habitos")}>Hábitos</button>
         <CirculoDeHabitos>
-        <button onClick={()=>navigate("/hoje")}>Hoje</button>
+          <button onClick={() => navigate("/hoje")}>Hoje</button>
         </CirculoDeHabitos>
-        <button onClick={()=>navigate("/historico")}>Histórico</button>
+        <button onClick={() => navigate("/historico")}>Histórico</button>
       </Rodape>
     </PageHabitos>
   );
@@ -168,6 +229,9 @@ const MeusHabitos = styled.div`
   }
 `;
 
+const Tarefas = styled.div`
+  display:flex;
+`
 const Cards = styled.div`
   margin-left: 17px;
   margin-right: 18px;

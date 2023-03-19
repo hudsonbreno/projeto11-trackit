@@ -27,6 +27,20 @@ export default function Hoje({token, image}) {
 
   },[])
 
+  function marcarConcluido(id){
+
+    console.log(id)
+    const config = {
+      headers: { Authorization: `Bearer ${token}`}
+    }
+    
+    let URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
+    const promise = axios.post(URL, config)
+
+    promise.then(res => console.log(res))
+    promise.then(err => console.log(err))
+  }
+
 
   return (
     <PageHoje>
