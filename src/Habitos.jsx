@@ -124,7 +124,7 @@ export default function Habitos({ token, image }) {
         <CirculoDeHabitos>
           <button onClick={() => navigate("/hoje")}>Hoje</button>
         </CirculoDeHabitos>
-        <button onClick={() => navigate("/historico")}>Histórico</button>
+        <button data-test="history-link" xonClick={() => navigate("/historico")}>Histórico</button>
       </Rodape>
     </PageHabitos>
   );

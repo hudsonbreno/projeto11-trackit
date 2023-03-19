@@ -1,39 +1,37 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import fotoPerfil from "./style/Rectangle 14.png";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Hoje({token, image}) {
-  let objetoVazioItens = {id:"",name:"",done:"",currentSequence:"",highestSequence:""}
-  const [ items, setItems ] = useState([])
+export default function Hoje({ token, image }) {
+  let objetoVazioItens = { id: "", name: "", done: "", currentSequence: "", highestSequence: "" }
+  const [items, setItems] = useState([])
 
   const navigate = useNavigate()
 
-  useEffect(()=>{
+  useEffect(() => {
 
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
-    
+
     const config = {
-      headers: { Authorization: `Bearer ${token}`}
+      headers: { Authorization: `Bearer ${token}` }
     }
-    
+
     const promise = axios.get(URL, config)
 
-    promise.then(resposta => setItems(resposta))
+    promise.then(resposta => console.log(resposta))
 
     promise.catch(resposta => console.log(resposta))
 
-  },[])
+  }, [])
 
-  function marcarConcluido(id){
+  function marcarConcluido(id) {
 
     console.log(id)
     const config = {
-      headers: { Authorization: `Bearer ${token}`}
+      headers: { Authorization: `Bearer ${token}` }
     }
-    
+
     let URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
     const promise = axios.post(URL, config)
 
@@ -44,7 +42,7 @@ export default function Hoje({token, image}) {
 
   return (
     <PageHoje>
-      <Navbar>
+      <Navbar data-test="header">
         <h1>TrackIt</h1>
         <img src={image} alt="foto perfil"></img>
       </Navbar>
@@ -56,20 +54,29 @@ export default function Hoje({token, image}) {
 
       <Item>
         <TextItem>
-          {items===[]? items.map((item)=>console.log(item.data)): ""}
-          {/* {items==objetoVazioItens?"":items.map((item)=>(
-            <Item key={item.id} titulo={item.name} done={item.done} currentSequence={item.currentSequence} highestSequence={item.highestSequence} />
-          ))} */}
+        {items == [] ? <div>Carregando</div> : items.map((item) =>
+            <>
+              <h1 data-test="habit-name">{item.name}</h1>
+              <div data-test="habit-day">D</div>
+              <div data-test="habit-day">S</div>
+              <div data-test="habit-day">T</div>
+              <div data-test="habit-day">Q</div>
+              <div data-test="habit-day">Q</div>
+              <div data-test="habit-day">S</div>
+              <div data-test="habit-day">S</div>
+              <button data-test="habit-delete-btn">deletar</button>
+            </>
+          )}
         </TextItem>
         <button>V</button>
       </Item>
 
       <Rodape>
-          <button onClick={()=>navigate("/habitos")}>Hábitos</button>
+        <button onClick={() => navigate("/habitos")}>Hábitos</button>
         <CirculoDeHabitos>
-          <button onClick={()=>navigate("/Hoje")}>Hoje</button>
+          <button onClick={() => navigate("/Hoje")}>Hoje</button>
         </CirculoDeHabitos>
-          <button onClick={()=>navigate("/historico")}>Histórico</button>
+        <button  data-test="history-link" onClick={() => navigate("/historico")}>Histórico</button>
       </Rodape>
     </PageHoje>
   );
@@ -156,7 +163,7 @@ const MeuHoje = styled.div`
   }
 `;
 
-const Item =styled.div`
+const Item = styled.div`
 background-color: #ffffff;
 width: 340px;
 height: 94px;
