@@ -77,7 +77,7 @@ export default function Hoje({ token, image }) {
     let URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
     const promise = axios.post(URL, config)
 
-    promise.then(res => console.log(res))
+    promise.then(res => console.log(res.data))
     promise.then(err => console.log(err))
   }
 
@@ -101,7 +101,7 @@ export default function Hoje({ token, image }) {
               <h1 data-test="today-habit-name">{item.name}</h1>
               <div data-test="today-habit-sequence">Sequência atual: 4 dias</div>
               <div data-test="today-habit-record">Seu recorde: 5 dias</div>
-              <button data-test="habit-delete-btn">deletar</button>
+              <button data-test="today-habit-check-btn"><img src={""}/></button>
             </div>
           )}
         </TextItem>

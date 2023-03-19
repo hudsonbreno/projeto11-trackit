@@ -84,7 +84,7 @@ export default function Habitos({ token, image }) {
 
       <MeusHabitos>
         <h1>Meus hábitos</h1>
-        <button onClick={() => exibirForm()}>+</button>
+        <button data-test="habit-create-btn" onClick={() => exibirForm()}>+</button>
       </MeusHabitos>
 
       <Tarefas data-test="habit-container">
@@ -120,7 +120,6 @@ export default function Habitos({ token, image }) {
             <button data-test="habit-day" onClick={() => botaoDia("6")} type="button" >S</button>
             <button data-test="habit-day" onClick={() => botaoDia("7")} type="button" >S</button>
           </>
-          <button data-test="habit-create-cancel-btn">Cancela</button>
           <button data-test="habit-create-save-btn" >Salvar</button>
         </form>
 
