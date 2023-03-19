@@ -9,6 +9,7 @@ export default function Habitos({ token, image }) {
   const [form, setForm] = useState({ name: "", days: [] })
   const [ativado, setAtivado] = useState([])
   const [item, setItem] = useState(["1", "2"])
+  const [displayForm, setDisplayForm] = useState(false)
 
   const navigate = useNavigate()
 
@@ -35,7 +36,6 @@ export default function Habitos({ token, image }) {
     }
 
     let dados = form;
-    console.log(dados)
     let URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     const promise2 = axios.post(
       URL, dados, config
@@ -70,17 +70,21 @@ export default function Habitos({ token, image }) {
 
   }
 
+  function exibirForm() {
+    setDisplayForm(true)
+  }
+
 
   return (
     <PageHabitos>
-      <Navbar>
+      <Navbar data-test="header">
         <h1>TrackIt</h1>
         <img src={image} alt="foto perfil"></img>
       </Navbar>
 
       <MeusHabitos>
         <h1>Meus hábitos</h1>
-        <button onClick={() => console.log("ei")}>+</button>
+        <button onClick={() => exibirForm()}>+</button>
       </MeusHabitos>
 
       <Tarefas data-test="habit-container">
@@ -104,7 +108,7 @@ export default function Habitos({ token, image }) {
         começar a trackear!
       </Cards>
 
-      <CadastroDeCard>
+      <CadastroDeCard data-test="habit-create-container" displayForm ={displayForm}>
         <form onSubmit={criarHabito}>
           <input type="text" data-test="habit-name-input" name={"name"} value={form.name} placeholder="Criar nova tarefa...." onChange={algoMudou} required />
           <>
@@ -116,6 +120,7 @@ export default function Habitos({ token, image }) {
             <button data-test="habit-day" onClick={() => botaoDia("6")} type="button" >S</button>
             <button data-test="habit-day" onClick={() => botaoDia("7")} type="button" >S</button>
           </>
+          <button data-test="habit-create-cancel-btn">Cancela</button>
           <button data-test="habit-create-save-btn" >Salvar</button>
         </form>
 
@@ -232,7 +237,7 @@ const MeusHabitos = styled.div`
 `;
 
 const Tarefas = styled.div`
-  display:flex;
+  display: "flex";
 `
 const Cards = styled.div`
   margin-left: 17px;
@@ -259,6 +264,7 @@ const CadastroDeCard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  display: ${props => props.displayForm? "flex": "none"};
   input{
     display: flex;
     flex-direction: row;

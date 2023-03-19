@@ -24,7 +24,7 @@ export default function Historico({token, image}) {
 
   return (
     <PageHistorico>
-      <Navbar>
+      <Navbar data-test="header">
         <h1>TrackIt</h1>
         <img src={image} alt="foto perfil"></img>
       </Navbar>

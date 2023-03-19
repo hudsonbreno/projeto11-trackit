@@ -53,7 +53,7 @@ export default function Hoje({ token, image }) {
       </MeuHoje>
 
       <Item>
-        <TextItem>
+        <TextItem data-test="habit-container">
         {items == [] ? <div>Carregando</div> : items.map((item) =>
             <>
               <h1 data-test="habit-name">{item.name}</h1>
@@ -74,7 +74,7 @@ export default function Hoje({ token, image }) {
       <Rodape data-test="menu">
         <button data-test="habit-link" onClick={() => navigate("/habitos")}>Hábitos</button>
         <CirculoDeHabitos>
-          <button data-test="today-link" onClick={() => navigate("/Hoje")}>Hoje</button>
+          <button data-test="today-link" onClick={() => navigate("/hoje")}>Hoje</button>
         </CirculoDeHabitos>
         <button data-test="history-link" onClick={() => navigate("/historico")}>Histórico</button>
       </Rodape>
