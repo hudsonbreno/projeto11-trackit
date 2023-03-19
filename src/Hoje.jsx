@@ -2,10 +2,14 @@ import styled from "styled-components";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import dayjs from 'dayjs'
+
 
 export default function Hoje({ token, image }) {
   let objetoVazioItens = { id: "", name: "", done: "", currentSequence: "", highestSequence: "" }
   const [items, setItems] = useState([])
+  const [diaDaSemana, setDiaDaSemana] = useState("")
+  const [dataNumero, setDataNumero] = useState("")
 
   const navigate = useNavigate()
 
@@ -23,7 +27,45 @@ export default function Hoje({ token, image }) {
 
     promise.catch(resposta => console.log(resposta))
 
+    let retornoHook = dayjs()
+    setDataDaSemana(retornoHook)
+    setData(retornoHook)
+
   }, [])
+
+  function setData(retornoHook){
+    let retornoHookString = retornoHook
+    setDataNumero(retornoHookString.$D.toString()+"/"+(Number(retornoHookString.$M)+1))
+  
+  }
+
+  function setDataDaSemana(retornoHook){
+    let retornoHookString = retornoHook.$d.toString()
+    const sigladia = retornoHookString.substr(0,3)
+    switch (sigladia) {
+      case "Mon":
+        setDiaDaSemana("Segunda");
+      break;
+      case "Tue":
+        setDiaDaSemana("Terça");
+      break;
+      case "Wed":
+        setDiaDaSemana("Quarta");
+      break;
+      case "Thu":
+        setDiaDaSemana("Quinta");
+      break;
+      case "Fri":
+        setDiaDaSemana("Sexta");
+      break;
+      case "Sat":
+        setDiaDaSemana("Sabado");
+      break;
+      case "Sun":
+        setDiaDaSemana("Domingo");
+      break;
+    }
+  }
 
   function marcarConcluido(id) {
 
@@ -48,24 +90,19 @@ export default function Hoje({ token, image }) {
       </Navbar>
 
       <MeuHoje>
-        <h1>Segunda, 17/05</h1>
-        <h2>Nenhum hábito concluido ainda</h2>
+        <h1 data-test="today">{diaDaSemana}, {dataNumero}</h1>
+        <h2 data-test="today-counter">Nenhum hábito concluido ainda</h2>
       </MeuHoje>
 
       <Item>
         <TextItem data-test="habit-container">
         {items == [] ? <div>Carregando</div> : items.map((item) =>
-            <>
-              <h1 data-test="habit-name">{item.name}</h1>
-              <div data-test="habit-day">D</div>
-              <div data-test="habit-day">S</div>
-              <div data-test="habit-day">T</div>
-              <div data-test="habit-day">Q</div>
-              <div data-test="habit-day">Q</div>
-              <div data-test="habit-day">S</div>
-              <div data-test="habit-day">S</div>
+            <div data-test="today-habit-container">
+              <h1 data-test="today-habit-name">{item.name}</h1>
+              <div data-test="today-habit-sequence">Sequência atual: 4 dias</div>
+              <div data-test="today-habit-record">Seu recorde: 5 dias</div>
               <button data-test="habit-delete-btn">deletar</button>
-            </>
+            </div>
           )}
         </TextItem>
         <button>V</button>
