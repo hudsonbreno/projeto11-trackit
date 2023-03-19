@@ -48,6 +48,7 @@ export default function Login({setToken, setImage}) {
           value={form.email}
           placeholder="email"
           onChange={algoMudou}
+          data-test="email-input"
           required
         />
         <input
@@ -56,12 +57,13 @@ export default function Login({setToken, setImage}) {
           value={form.password}
           placeholder="senha"
           onChange={algoMudou}
+          data-test="password-input"
           required
         />
-        <button>Entrar</button>
+        <button data-test="login-btn">Entrar</button>
       </form>
       <h2>
-        <Link to={"./cadastro"}> Não tem uma conta? Cadastre-se! </Link>
+        <Link  data-test="signup-link" to={"./cadastro"}> Não tem uma conta? Cadastre-se! </Link>
       </h2>
     </PageLogin>
   );

@@ -37,14 +37,14 @@ export default function Cadastro() {
       <img src={Ellipse3} alt="Ellipse3"></img>
       <h1>TrackIt</h1>
       <form onSubmit={cadastrar}>
-        <input type="email" name={"email"} value={form.email} placeholder="email" onChange={algoMudou}></input>
-        <input type="password" name={"password"} value={form.password} placeholder="senha" onChange={algoMudou}></input>
-        <input type="text" name={"name"} value={form.name} placeholder="nome" onChange={algoMudou}></input>
-        <input type="text" name={"image"} value={form.foto} placeholder="foto" onChange={algoMudou}></input>
-        <button>Cadastrar</button>
+        <input type="email" data-test="email-input" name={"email"} value={form.email} placeholder="email" onChange={algoMudou}></input>
+        <input type="password"  data-test="password-input" name={"password"} value={form.password} placeholder="senha" onChange={algoMudou}></input>
+        <input type="text" data-test="user-name-input" name={"name"} value={form.name} placeholder="nome" onChange={algoMudou}></input>
+        <input type="text" data-test="user-image-input" name={"image"} value={form.foto} placeholder="foto" onChange={algoMudou}></input>
+        <button data-test="signup-btn">Cadastrar</button>
       </form>
       <h2>
-        <Link to="../">já tem uma conta? Faça login!</Link>
+        <Link data-test="login-link" to="../">já tem uma conta? Faça login!</Link>
       </h2>
     </PageCadastro>
   );

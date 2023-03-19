@@ -81,18 +81,18 @@ export default function Habitos({ token, image }) {
         <button onClick={() => console.log("ei")}>+</button>
       </MeusHabitos>
 
-      <Tarefas>
+      <Tarefas data-test="habit-container">
         {item == [] ? <div>Carregando</div> : item.map((item) =>
           <>
-            <h1>{item.name}</h1>
-            <div>D</div>
-            <div>S</div>
-            <div>T</div>
-            <div>Q</div>
-            <div>Q</div>
-            <div>S</div>
-            <div>S</div>
-            <button onClick={()=>deletarTarefa(item.id)} >deletar</button>
+            <h1 data-test="habit-name">{item.name}</h1>
+            <div  data-test="habit-day">D</div>
+            <div  data-test="habit-day">S</div>
+            <div  data-test="habit-day">T</div>
+            <div  data-test="habit-day">Q</div>
+            <div  data-test="habit-day">Q</div>
+            <div  data-test="habit-day">S</div>
+            <div  data-test="habit-day">S</div>
+            <button onClick={()=>deletarTarefa(item.id)} data-test="habit-delete-btn">deletar</button>
           </>
         )}
       </Tarefas>
@@ -104,17 +104,17 @@ export default function Habitos({ token, image }) {
 
       <CadastroDeCard>
         <form onSubmit={criarHabito}>
-          <input type="text" name={"name"} value={form.name} placeholder="Criar nova tarefa...." onChange={algoMudou} required />
+          <input type="text" data-test="habit-name-input" name={"name"} value={form.name} placeholder="Criar nova tarefa...." onChange={algoMudou} required />
           <>
-            <button onClick={() => botaoDia("1")} type="button" >D</button>
-            <button onClick={() => botaoDia("2")} type="button" >S</button>
-            <button onClick={() => botaoDia("3")} type="button" >T</button>
-            <button onClick={() => botaoDia("4")} type="button" >Q</button>
-            <button onClick={() => botaoDia("5")} type="button" >Q</button>
-            <button onClick={() => botaoDia("6")} type="button" >S</button>
-            <button onClick={() => botaoDia("7")} type="button" >S</button>
+            <button data-test="habit-day" onClick={() => botaoDia("1")} type="button" >D</button>
+            <button data-test="habit-day" onClick={() => botaoDia("2")} type="button" >S</button>
+            <button data-test="habit-day" onClick={() => botaoDia("3")} type="button" >T</button>
+            <button data-test="habit-day" onClick={() => botaoDia("4")} type="button" >Q</button>
+            <button data-test="habit-day" onClick={() => botaoDia("5")} type="button" >Q</button>
+            <button data-test="habit-day" onClick={() => botaoDia("6")} type="button" >S</button>
+            <button data-test="habit-day" onClick={() => botaoDia("7")} type="button" >S</button>
           </>
-          <button>Salvar</button>
+          <button data-test="habit-create-save-btn" >Salvar</button>
         </form>
 
       </CadastroDeCard>
