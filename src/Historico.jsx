@@ -33,12 +33,12 @@ export default function Historico({token, image}) {
 
       <h2>Em breve você poderá ver o histórico dos seus hábitos aqui!</h2>
 
-      <Rodape>
-          <button onClick={()=>navigate("/habitos")}>Hábitos</button>
+      <Rodape data-test="menu">
+          <button data-test="habit-link" onClick={()=>navigate("/habitos")}>Hábitos</button>
         <CirculoDeHabitos>
-          <button onClick={()=>navigate("/Hoje")}>Hoje</button>
+          <button data-test="today-link" onClick={()=>navigate("/Hoje")}>Hoje</button>
         </CirculoDeHabitos>
-          <button onClick={()=>navigate("/historico")}>Histórico</button>
+          <button data-test="history-link" onClick={()=>navigate("/historico")}>Histórico</button>
       </Rodape>
     </PageHistorico>
   );

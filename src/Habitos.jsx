@@ -57,15 +57,17 @@ export default function Habitos({ token, image }) {
   }
 
   function deletarTarefa(id) {
-    console.log("id:" + id)
-    const config = {
-      headers: { Authorization: `Bearer ${token}` }
+    if(window.confirm("Pretende realmente deletar?") == true){
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+  
+      let URL3 = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
+      const promise3 = axios.delete(URL3, config)
+      promise3.then(res => console.log(res))
+      promise3.catch(err => console.log(err))
     }
 
-    let URL3 = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
-    const promise3 = axios.delete(URL3, config)
-    promise3.then(res => console.log(res))
-    promise3.catch(err => console.log(err))
   }
 
 
@@ -119,10 +121,10 @@ export default function Habitos({ token, image }) {
 
       </CadastroDeCard>
 
-      <Rodape>
-        <button onClick={() => navigate("/habitos")}>Hábitos</button>
+      <Rodape data-test="menu">
+        <button data-test="habit-link" onClick={() => navigate("/habitos")}>Hábitos</button>
         <CirculoDeHabitos>
-          <button onClick={() => navigate("/hoje")}>Hoje</button>
+          <button data-test="today-link" onClick={() => navigate("/hoje")}>Hoje</button>
         </CirculoDeHabitos>
         <button data-test="history-link" xonClick={() => navigate("/historico")}>Histórico</button>
       </Rodape>

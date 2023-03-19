@@ -8,10 +8,13 @@ import Vector3 from "./style/Vector 3.png";
 import Vector4 from "./style/Vector 4.png";
 import Ellipse3 from "./style/Ellipse 3.png";
 import { useNavigate } from "react-router-dom";
+import Loader from "./components/Loader";
 
 export default function Login({setToken, setImage}) {
 
-  const [form, setForm] = useState({email: "", password: ""});
+  const [ form, setForm ] = useState({email: "", password: ""});
+  const [ habilitado, setHabilitado ] = useState(false);
+
   const navigate = useNavigate()
 
   function algoMudou(event){
@@ -20,6 +23,7 @@ export default function Login({setToken, setImage}) {
 
   function cadastrar(e) {
     e.preventDefault();
+    setHabilitado(true)
     let dados = form;
     const promise = axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
@@ -30,7 +34,7 @@ export default function Login({setToken, setImage}) {
       setImage(res.data.image)
       navigate("/hoje")      
     });
-    promise.catch((resposta) => alert(resposta.data.message));
+    promise.catch((resposta) => alert(resposta.response.data.message)||setHabilitado(false));
   }
 
   return (
@@ -44,6 +48,7 @@ export default function Login({setToken, setImage}) {
       <form onSubmit={cadastrar}>
         <input
           type="text"
+          disabled={habilitado}
           name={"email"}
           value={form.email}
           placeholder="email"
@@ -53,6 +58,7 @@ export default function Login({setToken, setImage}) {
         />
         <input
           type="password"
+          disabled={habilitado}
           name={"password"}
           value={form.password}
           placeholder="senha"
@@ -60,7 +66,7 @@ export default function Login({setToken, setImage}) {
           data-test="password-input"
           required
         />
-        <button data-test="login-btn">Entrar</button>
+        <button disabled={habilitado} data-test="login-btn">{habilitado?<Loader/>:"Entrar"}</button>
       </form>
       <h2>
         <Link  data-test="signup-link" to={"./cadastro"}> Não tem uma conta? Cadastre-se! </Link>
@@ -120,6 +126,8 @@ const PageLogin = styled.div`
   }
 
   button {
+    display: flex;
+    justify-content: center;
     margin-bottom: 25px;
     background-color: #52b6ff;
     border-radius: 4.63636px;

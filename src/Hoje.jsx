@@ -71,12 +71,12 @@ export default function Hoje({ token, image }) {
         <button>V</button>
       </Item>
 
-      <Rodape>
-        <button onClick={() => navigate("/habitos")}>Hábitos</button>
+      <Rodape data-test="menu">
+        <button data-test="habit-link" onClick={() => navigate("/habitos")}>Hábitos</button>
         <CirculoDeHabitos>
-          <button onClick={() => navigate("/Hoje")}>Hoje</button>
+          <button data-test="today-link" onClick={() => navigate("/Hoje")}>Hoje</button>
         </CirculoDeHabitos>
-        <button  data-test="history-link" onClick={() => navigate("/historico")}>Histórico</button>
+        <button data-test="history-link" onClick={() => navigate("/historico")}>Histórico</button>
       </Rodape>
     </PageHoje>
   );
