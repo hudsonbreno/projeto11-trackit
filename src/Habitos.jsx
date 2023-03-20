@@ -9,9 +9,20 @@ export default function Habitos({ token, image }) {
 
   const [form, setForm] = useState({ name: "", days: [] })
   const [ativado, setAtivado] = useState([])
-  const [item, setItem] = useState(["1", "2"])
+  const [item, setItem] = useState([])
   const [displayForm, setDisplayForm] = useState(false)
   const [temHabito, setTemHabito] = useState(true)
+
+  const semana =[
+    { value:"0", letra:"D"},
+    { value:"1", letra:"S"},
+    { value:"2", letra:"T"},
+    { value:"3", letra:"Q"},
+    { value:"4", letra:"Q"},
+    { value:"5", letra:"S"},
+    { value:"6", letra:"S"},
+
+    ]
 
   const navigate = useNavigate()
 
@@ -73,7 +84,7 @@ export default function Habitos({ token, image }) {
   }
 
   function exibirForm() {
-    setDisplayForm(true)
+    form?setDisplayForm(true):setDisplayForm(true)
   }
 
  function novaBusca(){
@@ -86,14 +97,11 @@ export default function Habitos({ token, image }) {
   const promise4 = axios.get(URL, config)
 
   promise4.then(resposta => {
-    console.log("ta aqui")
     setItem(resposta.data)
   })
   promise4.catch(resposta => console.log(resposta.response.data.message))
 
   }
-
-  console.log(item)
 
   return (
     <PageHabitos>
@@ -117,6 +125,11 @@ export default function Habitos({ token, image }) {
               }}
                data-test="habit-delete-btn"><img src={lixeira} /></button>
             </div>
+            {/* {semana.map(dia=>
+              <>
+                <p habilitado={(dia.value.includes(item.days))}>{dia.letra}</p>
+              </>
+              )} */}
             <BotoesContainer>
               <p data-test="habit-day">D</p>
               <p data-test="habit-day">S</p>
@@ -141,6 +154,7 @@ export default function Habitos({ token, image }) {
             <button corCinza= {ativado.includes("6")} data-test="habit-day" onClick={() => botaoDia("6")} type="button" >S</button>
             <button corCinza= {ativado.includes("7")} data-test="habit-day" onClick={() => botaoDia("7")} type="button" >S</button>
           </>
+          <button type="button" data-test="habit-create-cancel-btn" onClick={()=>exibirForm()}> Cancelar</button>
           <button data-test="habit-create-save-btn" >Salvar</button>
         </form>
 
@@ -158,7 +172,7 @@ export default function Habitos({ token, image }) {
         <CirculoDeHabitos>
           <button data-test="today-link" onClick={() => navigate("/hoje")}>Hoje</button>
         </CirculoDeHabitos>
-        <button data-test="history-link" xonClick={() => navigate("/historico")}>Histórico</button>
+        <button data-test="history-link" onClick={() => navigate("/historico")}>Histórico</button>
       </Rodape>
     </PageHabitos>
   );
@@ -398,15 +412,6 @@ const CadastroDeCard = styled.div`
   }
 `
 
-const ListaDeBotoes = styled.div`
-    width: 100%;
-    margin-left: 35px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-`
-
 const Rodape = styled.div`
   width: 375px;
   height: 101px;
@@ -431,6 +436,19 @@ const Rodape = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: end;
+
+    color: #52b6ff;
+  }
+
+  button {
+    background: rgb(242, 242, 242);
+    border: 0px;
+    font-family: "Lexend Deca";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+    text-align: center;
 
     color: #52b6ff;
   }

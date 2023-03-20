@@ -17,6 +17,8 @@ export default function Hoje({ token, image }) {
   const [diaDaSemana, setDiaDaSemana] = useState("");
   const [dataNumero, setDataNumero] = useState("");
   const [done, setDone] = useState("");
+  const [total, setTotal] = useState(0);
+  const [porcentagem, setPorcentagem] = useState(0);
 
   const navigate = useNavigate();
 
@@ -30,24 +32,25 @@ export default function Hoje({ token, image }) {
 
     const promise = axios.get(URL, config);
 
-    promise.then((resposta) => setItems(resposta.data));
-
+    promise.then((resposta) => {
+      setItems(resposta.data);
+      resposta.data.map((prontos) =>
+        prontos.done == true
+          ? setPorcentagem(porcentagem + 1) && setTotal(total + 1)
+          : setTotal(total + 1)
+      );
+    });
     promise.catch((resposta) => console.log(resposta));
 
     let retornoHook = dayjs();
     setDataDaSemana(retornoHook);
     setData(retornoHook);
-
-    
   }, []);
 
   function setData(retornoHook) {
     let retornoHookString = retornoHook;
     setDataNumero(
-      retornoHookString.$D.toString() -
-        1 +
-        "/" +
-        (Number(retornoHookString.$M) + 1)
+      retornoHookString.$D.toString() + "/" + (Number(retornoHookString.$M) + 1)
     );
   }
 
@@ -92,13 +95,38 @@ export default function Hoje({ token, image }) {
     promise.then((err) => console.log(err));
   }
 
-  function clicouCheck() {
-    if (done === true) {
-      setDone(false);
+  function marcarDesmarcar(id) {
+    console.log(id);
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    let URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`;
+    const promise = axios.post(URL, config);
+
+    promise.then((res) => console.log(res.data));
+    promise.then((err) => console.log(err));
+  }
+
+  function clicouCheck(itemId, itemDone) {
+    if (itemDone === true) {
+      console.log(itemDone);
+      marcarDesmarcar(itemId);
     } else {
-      setDone(true);
+      console.log(itemDone);
+      marcarConcluido(itemId);
     }
   }
+
+  function porcentagemPronta() {
+    items.map((prontos) =>
+      prontos.done == true
+        ? setPorcentagem(porcentagem + 1) || setTotal(total + 1)
+        : setTotal(total + 1)
+    );
+  }
+  console.log(porcentagem);
+  console.log(total);
 
   return (
     <PageHoje>
@@ -126,12 +154,14 @@ export default function Hoje({ token, image }) {
                   <div data-test="today-habit-sequence">
                     Sequência atual: {item.currentSequence} dias
                   </div>
-                  <div data-test="today-habit-record">Seu recorde: {item.highestSequence} dias</div>
+                  <div data-test="today-habit-record">
+                    Seu recorde: {item.highestSequence} dias
+                  </div>
                 </div>
                 <button
                   done={item.done}
                   data-test="today-habit-check-btn"
-                  onClick={() => clicouCheck()}
+                  onClick={() => clicouCheck(item.id, item.done)}
                 >
                   <img src={check} />
                 </button>
@@ -212,7 +242,7 @@ const Navbar = styled.div`
 
 const MeuHoje = styled.div`
   margin-top: 28px;
-  margin-left: 17px;
+  margin-left: 45px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -299,8 +329,7 @@ const Tarefa = styled.div`
     margin-right: 13px;
     margin-top: 13px;
     background-color: ${(props) =>
-    props.children[1].props.done?"red":"blue"
-    };
+      props.children[1].props.done ? "red" : "blue"};
   }
 
   button img {
@@ -333,6 +362,19 @@ const Rodape = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: end;
+
+    color: #52b6ff;
+  }
+
+  button {
+    background: rgb(242, 242, 242);
+    border: 0px;
+    font-family: "Lexend Deca";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+    text-align: center;
 
     color: #52b6ff;
   }

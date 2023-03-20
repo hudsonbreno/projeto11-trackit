@@ -29,10 +29,10 @@ export default function Historico({token, image}) {
         <img src={image} alt="foto perfil"></img>
       </Navbar>
 
-      <MeuHisotico>
+      <MeuHistorico>
         <h1>Histórico</h1>
         <h2>Em breve você poderá ver o histórico dos seus hábitos aqui!</h2>
-      </MeuHisotico>
+      </MeuHistorico>
 
       <Rodape data-test="menu">
           <button data-test="habit-link" onClick={()=>navigate("/habitos")}>Hábitos</button>
@@ -103,7 +103,7 @@ const Navbar = styled.div`
   }
 `;
 
-const MeuHisotico = styled.div`
+const MeuHistorico = styled.div`
   margin-top:28px;
   margin-left: 17px;
   padding-right: 20px;
@@ -152,6 +152,19 @@ const Rodape = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: end;
+
+    color: #52b6ff;
+  }
+
+  button {
+    background: rgb(242, 242, 242);
+    border: 0px;
+    font-family: "Lexend Deca";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+    text-align: center;
 
     color: #52b6ff;
   }
