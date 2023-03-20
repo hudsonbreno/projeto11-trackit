@@ -125,20 +125,13 @@ export default function Habitos({ token, image }) {
               }}
                data-test="habit-delete-btn"><img src={lixeira} /></button>
             </div>
-            {/* {semana.map(dia=>
+            <div>
+            {semana.map(dia=>
               <>
-                <p habilitado={(dia.value.includes(item.days))}>{dia.letra}</p>
+                <h3 habilitado={console.log(dia.value.includes)}>{dia.letra}</h3>
               </>
-              )} */}
-            <BotoesContainer>
-              <p data-test="habit-day">D</p>
-              <p data-test="habit-day">S</p>
-              <p data-test="habit-day">T</p>
-              <p data-test="habit-day">Q</p>
-              <p data-test="habit-day">Q</p>
-              <p data-test="habit-day">S</p>
-              <p data-test="habit-day">S</p>
-            </BotoesContainer>
+              )}
+            </div>
           </Tarefas>
         )}
 
@@ -290,8 +283,6 @@ const Tarefas = styled.div`
   div{
     display:flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-right: 10px;
   }
   h1{
     margin-top: 13px;
@@ -308,14 +299,35 @@ const Tarefas = styled.div`
 
     color: #666666;
     }
+  div h3{
+    background-color: ${props => props.habilitado?"red":"blue"};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+    width: 30px;
+    height: 30px;
 
-    button{
-      border: 0px;
-      background-color: #ffffff;
+    border: 1px solid #D4D4D4;
+    border-radius: 5px;
+
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    /* identical to box height */
+
+    color: #DBDBDB;
+  }
+
+  button{
+    border: 0px;
+    background-color: #ffffff;
     }
-    img{
-      width: 15px;
-      height: 15px;
+  img{
+    width: 15px;
+    height: 15px;
     }
 `
 
