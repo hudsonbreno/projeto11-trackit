@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 
 export default function Hoje({ token, image }) {
   let objetoVazioItens = { id: "", name: "", done: "", currentSequence: "", highestSequence: "" }
-  const [items, setItems] = useState([])
+  const [items, setItems] = useState("")
   const [diaDaSemana, setDiaDaSemana] = useState("")
   const [dataNumero, setDataNumero] = useState("")
 
@@ -15,7 +15,7 @@ export default function Hoje({ token, image }) {
 
   useEffect(() => {
 
-    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily";
 
     const config = {
       headers: { Authorization: `Bearer ${token}` }
@@ -23,7 +23,7 @@ export default function Hoje({ token, image }) {
 
     const promise = axios.get(URL, config)
 
-    promise.then(resposta => console.log(resposta))
+    promise.then(resposta =>setItems(resposta.data))
 
     promise.catch(resposta => console.log(resposta))
 
@@ -35,7 +35,7 @@ export default function Hoje({ token, image }) {
 
   function setData(retornoHook){
     let retornoHookString = retornoHook
-    setDataNumero(retornoHookString.$D.toString()+"/"+(Number(retornoHookString.$M)+1))
+    setDataNumero((retornoHookString.$D.toString()-1)+"/"+(Number(retornoHookString.$M)+1))
   
   }
 
@@ -96,8 +96,10 @@ export default function Hoje({ token, image }) {
 
       <Item>
         <TextItem data-test="habit-container">
-        {items == [] ? <div>Carregando</div> : items.map((item) =>
-            <div data-test="today-habit-container">
+
+         {items == "" ?  <h1>Carregando</h1> : 
+         items[0].habits.map((item) =>
+            <div key={item.id} data-test="today-habit-container">
               <h1 data-test="today-habit-name">{item.name}</h1>
               <div data-test="today-habit-sequence">Sequência atual: 4 dias</div>
               <div data-test="today-habit-record">Seu recorde: 5 dias</div>
@@ -220,6 +222,7 @@ border-radius: 5px;
 `
 
 const TextItem = styled.div`
+background-color:green;
 display: flex;
 flex-direction: column;
 `

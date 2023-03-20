@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import fotoPerfil from "./style/Rectangle 14.png"
 import { useEffect, useState } from "react";
 import axios from "axios"
+import lixeira from "./style/lixeira.png"
 
 export default function Habitos({ token, image }) {
 
@@ -10,6 +11,7 @@ export default function Habitos({ token, image }) {
   const [ativado, setAtivado] = useState([])
   const [item, setItem] = useState(["1", "2"])
   const [displayForm, setDisplayForm] = useState(false)
+  const [temHabito, setTemHabito] = useState(true)
 
   const navigate = useNavigate()
 
@@ -74,6 +76,7 @@ export default function Habitos({ token, image }) {
     setDisplayForm(true)
   }
 
+  console.log(item)
 
   return (
     <PageHabitos>
@@ -87,26 +90,23 @@ export default function Habitos({ token, image }) {
         <button data-test="habit-create-btn" onClick={() => exibirForm()}>+</button>
       </MeusHabitos>
 
-      <Tarefas data-test="habit-container">
         {item == [] ? <div>Carregando</div> : item.map((item) =>
-          <>
-            <h1 data-test="habit-name">{item.name}</h1>
-            <div  data-test="habit-day">D</div>
-            <div  data-test="habit-day">S</div>
-            <div  data-test="habit-day">T</div>
-            <div  data-test="habit-day">Q</div>
-            <div  data-test="habit-day">Q</div>
-            <div  data-test="habit-day">S</div>
-            <div  data-test="habit-day">S</div>
-            <button onClick={()=>deletarTarefa(item.id)} data-test="habit-delete-btn">deletar</button>
-          </>
+          <Tarefas data-test="habit-container" key={item.id}>
+            <div>
+              <h1 data-test="habit-name">{item.name}</h1>
+              <button onClick={()=>deletarTarefa(item.id)} data-test="habit-delete-btn"><img src={lixeira} /></button>
+            </div>
+            <BotoesContainer>
+              <p display={item.days} data-test="habit-day">D</p>
+              <p data-test="habit-day">S</p>
+              <p data-test="habit-day">T</p>
+              <p data-test="habit-day">Q</p>
+              <p data-test="habit-day">Q</p>
+              <p data-test="habit-day">S</p>
+              <p data-test="habit-day">S</p>
+            </BotoesContainer>
+          </Tarefas>
         )}
-      </Tarefas>
-
-      <Cards>
-        Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
-        começar a trackear!
-      </Cards>
 
       <CadastroDeCard data-test="habit-create-container" displayForm ={displayForm}>
         <form onSubmit={criarHabito}>
@@ -125,6 +125,13 @@ export default function Habitos({ token, image }) {
 
       </CadastroDeCard>
 
+      <Cards display={temHabito}>
+        Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
+        começar a trackear!
+      </Cards>
+
+
+
       <Rodape data-test="menu">
         <button data-test="habit-link" onClick={() => navigate("/habitos")}>Hábitos</button>
         <CirculoDeHabitos>
@@ -138,9 +145,11 @@ export default function Habitos({ token, image }) {
 
 const PageHabitos = styled.div`
   background-color: #F2F2F2;
+  width: 375px;
+  height: 1000px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
   h2 {
@@ -190,24 +199,24 @@ const Navbar = styled.div`
 `;
 
 const MeusHabitos = styled.div`
-  margin-top: 18px;
-  margin-bottom: 20px;
+  margin-top:28px;
   margin-left: 17px;
-  margin-right: 18px;
+  padding-right: 20px;
+  width: 93%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 
   h1 {
-    font-family: "Lexend Deca";
+    font-family: 'Lexend Deca', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 22.976px;
     line-height: 29px;
-    /* identical to box height */
-
-    color: #126ba5;
+    box-sizing: border-box;
+    margin-top: 20px;
+    color: #126BA5;;
   }
 
   button {
@@ -236,12 +245,80 @@ const MeusHabitos = styled.div`
 `;
 
 const Tarefas = styled.div`
-  display: "flex";
+  display: flex;
+  flex-direction: column;
+  width: 340px;
+  height: 91px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  div{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 10px;
+  }
+  h1{
+    margin-top: 13px;
+    margin-left: 15px;
+    margin-bottom: 8px;
+    width: 220px;
+    height: 25px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    /* identical to box height */
+
+    color: #666666;
+    }
+
+    button{
+      border: 0px;
+      background-color: #ffffff;
+    }
+    img{
+      width: 15px;
+      height: 15px;
+    }
 `
+
+const BotoesContainer = styled.p`
+  display: flex;
+  flex-direction: row;
+
+  width: 180px;
+  height: 30px;
+  margin-left: 14px;
+  p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 8px;
+    padding-left: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-left: 4px;
+    border: 1px solid #D4D4D4;
+    border-radius: 5px;
+
+    font-family: 'Lexend Deca';
+font-style: normal;
+font-weight: 400;
+font-size: 19.976px;
+line-height: 25px;
+/* identical to box height */
+
+
+color: #DBDBDB;
+  }
+`
+
 const Cards = styled.div`
   margin-left: 17px;
   margin-right: 18px;
-  display: flex;
+  display: ${props => props.display?"flex":"none"};
   flex-direction: column;
   justify-content: center;
   align-items: center;
