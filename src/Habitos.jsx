@@ -76,6 +76,23 @@ export default function Habitos({ token, image }) {
     setDisplayForm(true)
   }
 
+ function novaBusca(){
+  
+  const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+  }
+
+  const promise4 = axios.get(URL, config)
+
+  promise4.then(resposta => {
+    console.log("ta aqui")
+    setItem(resposta.data)
+  })
+  promise4.catch(resposta => console.log(resposta.response.data.message))
+
+  }
+
   console.log(item)
 
   return (
@@ -94,10 +111,14 @@ export default function Habitos({ token, image }) {
           <Tarefas data-test="habit-container" key={item.id}>
             <div>
               <h1 data-test="habit-name">{item.name}</h1>
-              <button onClick={()=>deletarTarefa(item.id)} data-test="habit-delete-btn"><img src={lixeira} /></button>
+              <button onClick={()=>{
+                deletarTarefa(item.id)
+                novaBusca()
+              }}
+               data-test="habit-delete-btn"><img src={lixeira} /></button>
             </div>
             <BotoesContainer>
-              <p display={item.days} data-test="habit-day">D</p>
+              <p data-test="habit-day">D</p>
               <p data-test="habit-day">S</p>
               <p data-test="habit-day">T</p>
               <p data-test="habit-day">Q</p>
@@ -112,20 +133,20 @@ export default function Habitos({ token, image }) {
         <form onSubmit={criarHabito}>
           <input type="text" data-test="habit-name-input" name={"name"} value={form.name} placeholder="Criar nova tarefa...." onChange={algoMudou} required />
           <>
-            <button data-test="habit-day" onClick={() => botaoDia("1")} type="button" >D</button>
-            <button data-test="habit-day" onClick={() => botaoDia("2")} type="button" >S</button>
-            <button data-test="habit-day" onClick={() => botaoDia("3")} type="button" >T</button>
-            <button data-test="habit-day" onClick={() => botaoDia("4")} type="button" >Q</button>
-            <button data-test="habit-day" onClick={() => botaoDia("5")} type="button" >Q</button>
-            <button data-test="habit-day" onClick={() => botaoDia("6")} type="button" >S</button>
-            <button data-test="habit-day" onClick={() => botaoDia("7")} type="button" >S</button>
+            <button corCinza= {ativado.includes("1")} data-test="habit-day" onClick={() => botaoDia("1")} type="button" >D</button>
+            <button corCinza= {ativado.includes("2")} data-test="habit-day" onClick={() => botaoDia("2")} type="button" >S</button>
+            <button corCinza= {ativado.includes("3")} data-test="habit-day" onClick={() => botaoDia("3")} type="button" >T</button>
+            <button corCinza= {ativado.includes("4")} data-test="habit-day" onClick={() => botaoDia("4")} type="button" >Q</button>
+            <button corCinza= {ativado.includes("5")} data-test="habit-day" onClick={() => botaoDia("5")} type="button" >Q</button>
+            <button corCinza= {ativado.includes("6")} data-test="habit-day" onClick={() => botaoDia("6")} type="button" >S</button>
+            <button corCinza= {ativado.includes("7")} data-test="habit-day" onClick={() => botaoDia("7")} type="button" >S</button>
           </>
           <button data-test="habit-create-save-btn" >Salvar</button>
         </form>
 
       </CadastroDeCard>
 
-      <Cards display={temHabito}>
+      <Cards display={""}>
         Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
         começar a trackear!
       </Cards>
@@ -304,21 +325,20 @@ const BotoesContainer = styled.p`
     border-radius: 5px;
 
     font-family: 'Lexend Deca';
-font-style: normal;
-font-weight: 400;
-font-size: 19.976px;
-line-height: 25px;
-/* identical to box height */
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    /* identical to box height */
 
-
-color: #DBDBDB;
+    color: #DBDBDB;
   }
 `
 
 const Cards = styled.div`
   margin-left: 17px;
   margin-right: 18px;
-  display: ${props => props.display?"flex":"none"};
+  display: ${props => props.display};
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -374,6 +394,7 @@ const CadastroDeCard = styled.div`
     border: 1px solid #D5D5D5;
     border-radius: 5px;
     margin-right: 4px;
+    background-color: ${props =>props.corCinza==true? "red": "green"};
   }
 `
 

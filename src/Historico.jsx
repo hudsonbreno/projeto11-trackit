@@ -29,9 +29,10 @@ export default function Historico({token, image}) {
         <img src={image} alt="foto perfil"></img>
       </Navbar>
 
-      <h1>Histórico</h1>
-
-      <h2>Em breve você poderá ver o histórico dos seus hábitos aqui!</h2>
+      <MeuHisotico>
+        <h1>Histórico</h1>
+        <h2>Em breve você poderá ver o histórico dos seus hábitos aqui!</h2>
+      </MeuHisotico>
 
       <Rodape data-test="menu">
           <button data-test="habit-link" onClick={()=>navigate("/habitos")}>Hábitos</button>
@@ -102,44 +103,28 @@ const Navbar = styled.div`
   }
 `;
 
-const MeusHabitos = styled.div`
+const MeuHisotico = styled.div`
+  margin-top:28px;
+  margin-left: 17px;
+  padding-right: 20px;
+  width: 93%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 
   h1 {
-    font-family: "Lexend Deca";
+    font-family: 'Lexend Deca', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 22.976px;
     line-height: 29px;
-    /* identical to box height */
-
-    color: #126ba5;
+    box-sizing: border-box;
+    margin-top: 20px;
+    color: #126BA5;
   }
-
-  button {
-    width: 40px;
-    height: 35px;
-    margin-top: 18px;
-    color: #ffffff;
-    background: #52b6ff;
-    border-radius: 4.63636px;
-    border: 1px solid #52b6ff;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    font-family: "Lexend Deca";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 26.976px;
-    line-height: 34px;
-    /* identical to box height */
-
-    text-align: center;
+  h2{
+    margin-top:17px;
   }
 `;
 
